@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Payment App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #1c1c1c;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      padding-top: 60px;
+    }
+    .amount {
+      font-size: 60px;
+      margin: 10px 0;
+    }
+    .currency-select {
+      background: #1c1c1c;
+      color: white;
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 40px;
+      appearance: none;
+      outline: none;
+      border: none;
+    }
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 80px);
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    .keypad button {
+      font-size: 24px;
+      background: none;
+      color: white;
+      width: 80px;
+      height: 80px;
+      outline: none;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+    .actions button {
+      font-size: 18px;
+      background: #333;
+      color: white;
+      width: 120px;
+      height: 40px;
+      outline: none;
+      border-radius: 20px;
+    }
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+      color: gray;
+      font-size: 14px;
+    }
+    button, select {
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="amount" id="amount-display">$0</div>
+  <select class="currency-select">
+    <option value="USD">USD</option>
+  </select>
+  <div class="keypad">
+    <button onclick="appendKey('1')">1</button>
+    <button onclick="appendKey('2')">2</button>
+    <button onclick="appendKey('3')">3</button>
+    <button onclick="appendKey('4')">4</button>
+    <button onclick="appendKey('5')">5</button>
+    <button onclick="appendKey('6')">6</button>
+    <button onclick="appendKey('7')">7</button>
+    <button onclick="appendKey('8')">8</button>
+    <button onclick="appendKey('9')">9</button>
+    <button onclick="appendKey('.')">.</button>
+    <button onclick="appendKey('0')">0</button>
+    <button onclick="backspace()">&lt;</button>
+  </div>
+ <div class="actions">
+  <button>Request</button>
+  <button onclick="handlePay()">Pay</button>
+</div>
+
+  <div class="footer">
+    <span>$99k</span>
+    <span>💳</span>
+    <span>$</span>
+    <span>🔍</span>
+    <span>31</span>
+  </div>
+
+ <script>
+  let amount = "0";
+
+  function appendKey(key) {
+    if (amount === "0" && key !== ".") amount = "";
+    if (key === "." && amount.includes(".")) return;
+    amount += key;
+    updateDisplay();
+  }
+
+  function backspace() {
+    amount = amount.slice(0, -1);
+    if (amount === "") amount = "0";
+    updateDisplay();
+  }
+
+  function updateDisplay() {
+    document.getElementById("amount-display").textContent = "$" + amount;
+  }
+
+  // THIS is the key change: save the *typed* amount
+  function handlePay() {
+    localStorage.setItem("displayAmount", amount);
+    window.location.href = "testofsending.html";
+  }
+
+  document.addEventListener("keydown", function(event) {
+    if (!isNaN(event.key) || event.key === ".") {
+      appendKey(event.key);
+    } else if (event.key === "Backspace") {
+      backspace();
+    }
+  });
+</script>
+
+
+</body>
+</html>
+
